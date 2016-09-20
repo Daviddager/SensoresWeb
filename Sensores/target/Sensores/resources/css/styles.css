@@ -1,0 +1,31 @@
+body{
+  background-image: url( "http://www.ucentral.edu.co/images/template_images/ucentral/fondos/fondo-50-aniversario-30junio.jpg" );
+  background-repeat: repeat;
+  background-position: center top;
+  background-attachment: fixed;
+  background-color: #ffffff;
+}
+.mainpanel {
+  margin-right: auto;
+  margin-left: 200px;
+}
+
+.middle {
+  margin-right: 200px;
+  margin-left: auto;
+  width: 500px
+}
+
+.sensores {
+  position: absolute;
+  left: 550px;
+  top: 300px;
+  width: 100px;
+}
+
+.autores {
+  position: absolute;
+  left: 700px;
+  top: 300px;
+  width: 100px;
+}
