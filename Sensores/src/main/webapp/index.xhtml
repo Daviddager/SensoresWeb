@@ -11,12 +11,8 @@
    </h:head>
    <h:body style="padding-top: 50px; padding-bottom: 20px;">
     <h:outputStylesheet library="css" name="styles.css"  />
-    <span class="mainpanel">
-         <ui:insert name="header" >
-            <img src="resources/images/logo.png" width="500px" height="100"/>
-            <img src="resources/images/animacion-cabezote-aniversario-50.gif" width="500px" height="100" />
-         </ui:insert>
-       </span>
+    <ui:composition template="templates/common.xhtml">
+    <ui:define name="body">
        <div class="mainpanel">
       <br/>
          <ui:insert name="content" >
@@ -30,11 +26,13 @@
           <div>
             <p class="autores">
             <b:button outcome="info" look="info" icon="ok" value="Autores"/>
-          </p>
+            </p>
         </div>
           </b:container>
          </ui:insert>
        </div>
       <br/>
+    </ui:define>
+    </ui:composition>
    </h:body>
 </html>

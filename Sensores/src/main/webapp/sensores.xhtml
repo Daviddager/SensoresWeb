@@ -3,10 +3,72 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:ui="http://java.sun.com/jsf/facelets">
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:b="http://bootsfaces.net/ui"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui"
+   >
    <h:body >
       <ui:composition template="templates/common.xhtml">
-      
+        <ui:define name="body">
+        <b:container>
+        <h:form>
+          <b:row>
+            <b:column col-md="3" offset="1" >
+                <b:panel title="Sensores" look="info">
+                <h:form styleClass="form-panel">
+
+                <b:inputText id="temperatura" label="Temperatura" placeholder="Temperatura" value="#{datos.temperatura}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+                <b:inputText id="humedad" label="Humedad" placeholder="Humedad" value="#{datos.humedad}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+                <b:inputText id="dirViento" label="Dirección del Viento" placeholder="Direccion" value="#{datos.direccion}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+                <b:inputText id="velViento" label="Velocidad del Viento" placeholder="Velocidad" value="#{datos.velocidad}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+                <b:inputText id="radiacion" label="Radiación Solar" placeholder="Radiacion" value="#{datos.radiacion}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+                <b:inputText id="rayosuv" label="Rayos UV" placeholder="Rayos UV" value="#{datos.rayos}" disabled="true">
+                  <f:facet name="prepend">
+                    <b:icon name="pencil" />
+                  </f:facet>
+                </b:inputText>
+
+              </h:form>
+            </b:panel>
+       </b:column>
+       <b:column col-md="7" >
+        <b:panel title="Gráficas" look="info">
+          <h:form styleClass="form-panel">
+          <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
+          <p:chart type="line" model="#{chartView.lineModel2}" style="height:300px;"/>
+          </h:form>
+        </b:panel>
+       </b:column>
+       </b:row>
+     </h:form>
+      </b:container>
+      </ui:define>
       </ui:composition>
    </h:body>
 </html>
