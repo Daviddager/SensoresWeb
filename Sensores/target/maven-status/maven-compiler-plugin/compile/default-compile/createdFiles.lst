@@ -1,1 +1,5 @@
+com/logic/controller/SensoresController.class
+com/data/Entity/Sensores.class
 com/presentation/bean/ChartView.class
+com/data/DAO/DatabaseHelper.class
+com/data/DAO/SensoresDAO.class

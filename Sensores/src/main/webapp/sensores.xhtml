@@ -30,13 +30,13 @@
                   </f:facet>
                 </b:inputText>
 
-                <b:inputText id="dirViento" label="Dirección del Viento" placeholder="Direccion" value="#{datos.direccion}" disabled="true">
+                <b:inputText id="direccion" label="Dirección del Viento" placeholder="Direccion" value="#{datos.direccion}" disabled="true">
                   <f:facet name="prepend">
                     <b:icon name="pencil" />
                   </f:facet>
                 </b:inputText>
 
-                <b:inputText id="velViento" label="Velocidad del Viento" placeholder="Velocidad" value="#{datos.velocidad}" disabled="true">
+                <b:inputText id="velocidad" label="Velocidad del Viento" placeholder="Velocidad" value="#{datos.velocidad}" disabled="true">
                   <f:facet name="prepend">
                     <b:icon name="pencil" />
                   </f:facet>
@@ -48,7 +48,7 @@
                   </f:facet>
                 </b:inputText>
 
-                <b:inputText id="rayosuv" label="Rayos UV" placeholder="Rayos UV" value="#{datos.rayos}" disabled="true">
+                <b:inputText id="rayos" label="Rayos UV" placeholder="Rayos UV" value="#{datos.rayos}" disabled="true">
                   <f:facet name="prepend">
                     <b:icon name="pencil" />
                   </f:facet>
@@ -57,11 +57,40 @@
               </h:form>
             </b:panel>
        </b:column>
+       <b:column col-md="3">
+        <b:panel>
+        <p:calendar value="#{datos.finicial}" mode="popup"/>
+      </b:panel>
+       </b:column>
+       <b:column col-md="3">
+        <b:panel>
+        <p:calendar value="#{datos.ffinal}" mode="popup"/>
+      </b:panel>
+       </b:column>
+       <p>
+         <b:button action="#{datos.graficar()}" look="info" iconAwesome="bar-chart-o" value="Graficar"/>
+       </p>
        <b:column col-md="7" >
         <b:panel title="Gráficas" look="info">
           <h:form styleClass="form-panel">
-          <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;"/>
-          <p:chart type="line" model="#{chartView.lineModel2}" style="height:300px;"/>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
+          <p>
+            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+          </p>
           </h:form>
         </b:panel>
        </b:column>
