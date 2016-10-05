@@ -20,37 +20,37 @@
 
                 <b:inputText id="temperatura" label="Temperatura" placeholder="Temperatura" value="#{datos.temperatura}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="eyedropper" />
                   </f:facet>
                 </b:inputText>
 
                 <b:inputText id="humedad" label="Humedad" placeholder="Humedad" value="#{datos.humedad}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="tint" />
                   </f:facet>
                 </b:inputText>
 
                 <b:inputText id="direccion" label="Dirección del Viento" placeholder="Direccion" value="#{datos.direccion}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="arrows" />
                   </f:facet>
                 </b:inputText>
 
                 <b:inputText id="velocidad" label="Velocidad del Viento" placeholder="Velocidad" value="#{datos.velocidad}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="forward" />
                   </f:facet>
                 </b:inputText>
 
                 <b:inputText id="radiacion" label="Radiación Solar" placeholder="Radiacion" value="#{datos.radiacion}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="sun-o" />
                   </f:facet>
                 </b:inputText>
 
                 <b:inputText id="rayos" label="Rayos UV" placeholder="Rayos UV" value="#{datos.rayos}" disabled="true">
                   <f:facet name="prepend">
-                    <b:icon name="pencil" />
+                    <b:iconAwesome name="flash" />
                   </f:facet>
                 </b:inputText>
 
@@ -68,7 +68,7 @@
       </b:panel>
        </b:column>
        <p>
-         <b:button action="#{datos.graficar()}" look="info" iconAwesome="bar-chart-o" value="Graficar"/>
+         <b:button action="#{datos.graficar()}" look="info" iconAwesome="line-chart" value="Graficar"/>
        </p>
        <b:column col-md="7" >
         <b:panel title="Gráficas" look="info">
@@ -77,19 +77,19 @@
             <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="line" model="#{datos.humedadLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="pie" model="#{datos.direccionLine}" style="width:400px;height:300px" />
           </p>
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="line" model="#{datos.velocidadLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="line" model="#{datos.radiacionLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="line" model="#{datos.rayosLine}" style="height:300px;"/>
           </p>
           </h:form>
         </b:panel>

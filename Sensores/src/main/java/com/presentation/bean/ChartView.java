@@ -7,9 +7,11 @@ import javax.faces.bean.ManagedBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.CategoryAxis;
+import java.util.ArrayList;
 
 
 @ManagedBean( name = "datos" )
@@ -24,21 +26,49 @@ public class ChartView implements Serializable {
     private String finicial;
     private String ffinal;
 
+    private ArrayList<Integer> tempArray;
+    private ArrayList<Integer> humArray;
+    private ArrayList<String> dirArray;
+    private ArrayList<Float> velArray;
+    private ArrayList<Integer> radArray;
+    private ArrayList<Integer> rayArray;
+
     private LineChartModel temperaturaLine;
     private LineChartModel humedadLine;
-    private LineChartModel direccionLine;
+    private PieChartModel direccionLine;
     private LineChartModel velocidadLine;
     private LineChartModel radiacionLine;
     private LineChartModel rayosLine;
 
 
     public ChartView(){
-      temperatura = 0;
-      humedad = 0;
-      direccion = "0";
-      velocidad = 0.0f;
-      radiacion = 0;
-      rayos = 0;
+
+      ArrayList<ArrayList> result = new ArrayList<ArrayList>();
+      SensoresController sc = new SensoresController();
+
+      tempArray = new ArrayList<Integer>();
+      humArray = new ArrayList<Integer>();
+      dirArray = new ArrayList<String>();
+      velArray = new ArrayList<Float>();
+      radArray = new ArrayList<Integer>();
+      rayArray = new ArrayList<Integer>();
+
+      result = sc.consultar( );
+      //System.out.println( result.size() );
+      tempArray = result.get(0);
+      humArray = result.get(1);
+      dirArray = result.get(2);
+      velArray = result.get(3);
+      radArray = result.get(4);
+      rayArray = result.get(5);
+
+      temperatura = tempArray.get( tempArray.size() - 1 );
+      humedad = humArray.get( humArray.size() - 1 );
+      direccion = dirArray.get( dirArray.size() - 1 );
+      velocidad = velArray.get( velArray.size() - 1 );
+      radiacion = radArray.get( radArray.size() - 1 );
+      rayos = rayArray.get( rayArray.size() - 1 );
+
     }
 
     public Integer getTemperatura(){
@@ -107,7 +137,7 @@ public class ChartView implements Serializable {
 
     @PostConstruct
     public void init() {
-        createLineModels();
+        createModels();
     }
 
     public LineChartModel getTemperaturaLine() {
@@ -118,7 +148,7 @@ public class ChartView implements Serializable {
         return humedadLine;
     }
 
-    public LineChartModel getDireccionLine() {
+    public PieChartModel getDireccionLine() {
         return direccionLine;
     }
 
@@ -139,10 +169,19 @@ public class ChartView implements Serializable {
     // }
 
     public void graficar(){
-
+      ArrayList<ArrayList> result = new ArrayList<ArrayList>();
+      SensoresController sc = new SensoresController();
+      result = sc.consultarDatos( finicial, ffinal );
+      tempArray = result.get(0);
+      humArray = result.get(1);
+      dirArray = result.get(2);
+      velArray = result.get(3);
+      radArray = result.get(4);
+      rayArray = result.get(5);
+      createModels();
     }
 
-    private void createLineModels() {
+    private void createModels() {
         temperaturaLine = initTemperaturaModel();
         temperaturaLine.setLegendPosition("e");
         temperaturaLine.setTitle("Temperatura");
@@ -153,60 +192,131 @@ public class ChartView implements Serializable {
         humedadLine = initHumedadModel();
         humedadLine.setLegendPosition("e");
         humedadLine.setTitle("Humedad");
-        Axis yAxis = humedadLine.getAxis(AxisType.Y);
+        yAxis = humedadLine.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(10);
 
-        temperaturaLine = initTemperatureModel();
-        temperaturaLine.setLegendPosition("e");
-        temperaturaLine.setTitle("Temperatura");
-        Axis yAxis = temperaturaLine.getAxis(AxisType.Y);
+        direccionLine = initDireccionModel();
+        direccionLine.setLegendPosition("e");
+        direccionLine.setTitle("Direccion");
+
+        velocidadLine = initVelocidadModel();
+        velocidadLine.setLegendPosition("e");
+        velocidadLine.setTitle("Velocidad");
+        yAxis = velocidadLine.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(10);
 
-        temperaturaLine = initTemperatureModel();
-        temperaturaLine.setLegendPosition("e");
-        temperaturaLine.setTitle("Temperatura");
-        Axis yAxis = temperaturaLine.getAxis(AxisType.Y);
+        radiacionLine = initRadiacionModel();
+        radiacionLine.setLegendPosition("e");
+        radiacionLine.setTitle("Radiacion");
+        yAxis = radiacionLine.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(10);
 
-        temperaturaLine = initTemperatureModel();
-        temperaturaLine.setLegendPosition("e");
-        temperaturaLine.setTitle("Temperatura");
-        Axis yAxis = temperaturaLine.getAxis(AxisType.Y);
+        rayosLine = initRayosModel();
+        rayosLine.setLegendPosition("e");
+        rayosLine.setTitle("Rayos");
+        yAxis = rayosLine.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(10);
-
-        temperaturaLine = initTemperatureModel();
-        temperaturaLine.setLegendPosition("e");
-        temperaturaLine.setTitle("Temperatura");
-        Axis yAxis = temperaturaLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
-
-        // lineModel2 = initCategoryModel();
-        // lineModel2.setTitle("Category Chart");
-        // lineModel2.setLegendPosition("e");
-        // lineModel2.setShowPointLabels(true);
-        // lineModel2.getAxes().put(AxisType.X, new CategoryAxis("Years"));
-        // yAxis = lineModel2.getAxis(AxisType.Y);
-        // yAxis.setLabel("Births");
-        // yAxis.setMin(0);
-        // yAxis.setMax(200);
     }
 
-    private LineChartModel initTemperatureModel() {
+    private LineChartModel initTemperaturaModel() {
         LineChartModel model = new LineChartModel();
 
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Temperatura");
 
-        series1.set(1, 2);
-        series1.set(2, 1);
-        series1.set(3, 3);
-        series1.set(4, 6);
-        series1.set(5, 8);
+        for( int i = 0; i < tempArray.size(); i++ ){
+          series1.set( i, tempArray.get( i ) );
+        }
+
+        model.addSeries(series1);
+
+        return model;
+    }
+
+    private LineChartModel initHumedadModel() {
+        LineChartModel model = new LineChartModel();
+
+        LineChartSeries series1 = new LineChartSeries();
+        series1.setLabel("Humedad");
+
+        for( int i = 0; i < humArray.size(); i++ ){
+          series1.set( i, humArray.get( i ) );
+        }
+
+        model.addSeries(series1);
+
+        return model;
+    }
+
+    private PieChartModel initDireccionModel() {
+        PieChartModel model = new PieChartModel();
+        int n = 0, s = 0, w = 0, e = 0;
+        for( int i = 0; i < dirArray.size(); i++ ){
+          String val = dirArray.get( i );
+          if( val.equals( "N" )  ){
+            n += 1;
+          }
+          if( val.equals( "S" ) ){
+            s += 1;
+          }
+          if( val.equals( "W" ) ){
+            w += 1;
+          }
+          if( val.equals( "E" )){
+            e += 1;
+          }
+        }
+        model.set( "N", n );
+        model.set( "S", s );
+        model.set( "W", w );
+        model.set( "E", e );
+
+        return model;
+    }
+
+    private LineChartModel initVelocidadModel() {
+        LineChartModel model = new LineChartModel();
+
+        LineChartSeries series1 = new LineChartSeries();
+        series1.setLabel("Velocidad");
+
+        for( int i = 0; i < velArray.size(); i++ ){
+          series1.set( i, velArray.get( i ) );
+        }
+
+        model.addSeries(series1);
+
+        return model;
+    }
+
+    private LineChartModel initRadiacionModel() {
+        LineChartModel model = new LineChartModel();
+
+        LineChartSeries series1 = new LineChartSeries();
+        series1.setLabel("Radiacion");
+
+        for( int i = 0; i < radArray.size(); i++ ){
+          series1.set( i, radArray.get( i ) );
+        }
+
+        model.addSeries(series1);
+
+        return model;
+    }
+
+    private LineChartModel initRayosModel() {
+        LineChartModel model = new LineChartModel();
+
+        LineChartSeries series1 = new LineChartSeries();
+        series1.setLabel("Rayos");
+
+        for( int i = 0; i < rayArray.size(); i++ ){
+          series1.set( i, rayArray.get( i ) );
+        }
 
         model.addSeries(series1);
 

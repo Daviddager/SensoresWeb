@@ -9,12 +9,12 @@ import java.sql.Statement;
 
 
 public class DatabaseHelper{
-    private final String dbURL = "jdbc:mysql://localhost/Sensores";
+    private final String dbURL = "jdbc:mysql://localhost:3306/Sensores";
     private final String username = "sensores";
     private final String password = "sensores1234";
 
     public Connection getConnection() throws SQLException {
-       return DriverManager.getConnection(dbURL, this.username, this.password);   
+       return DriverManager.getConnection(dbURL, this.username, this.password);
     }
 
 }
