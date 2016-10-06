@@ -68,28 +68,31 @@
       </b:panel>
        </b:column>
        <p>
-         <b:button action="#{datos.graficar()}" look="info" iconAwesome="line-chart" value="Graficar"/>
+         <b:commandButton action="#{datos.graficar()}" look="info" iconAwesome="line-chart" value="Graficar"/>
+         <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+        <p:fileDownload value="#{data.generatefile()}" />
+    </p:commandButton>
        </p>
        <b:column col-md="7" >
         <b:panel title="Gráficas" look="info">
           <h:form styleClass="form-panel">
           <p>
-            <p:chart type="line" model="#{datos.temperaturaLine}" style="height:300px;"/>
+            <p:chart type="line" id="tempchart" model="#{datos.temperaturaLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.humedadLine}" style="height:300px;"/>
+            <p:chart type="line" id="humchart" model="#{datos.humedadLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="pie" model="#{datos.direccionLine}" style="width:400px;height:300px" />
+            <p:chart type="pie" id="dirchart" model="#{datos.direccionLine}" style="width:600px;height:300px" />
           </p>
           <p>
-            <p:chart type="line" model="#{datos.velocidadLine}" style="height:300px;"/>
+            <p:chart type="line" id="velchart" model="#{datos.velocidadLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.radiacionLine}" style="height:300px;"/>
+            <p:chart type="line" id="radchart" model="#{datos.radiacionLine}" style="height:300px;"/>
           </p>
           <p>
-            <p:chart type="line" model="#{datos.rayosLine}" style="height:300px;"/>
+            <p:chart type="line" id="raychart" model="#{datos.rayosLine}" style="height:300px;"/>
           </p>
           </h:form>
         </b:panel>

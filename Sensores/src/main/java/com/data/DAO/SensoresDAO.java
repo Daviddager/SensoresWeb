@@ -15,7 +15,16 @@ public class SensoresDAO{
   private ArrayList<Float> vel;
   private ArrayList<Integer> rad;
   private ArrayList<Integer> ray;
-
+/*
+  private ArrayList<Integer> lat;
+  private ArrayList<Float> gLat;
+  private ArrayList<String> oLat;
+  private ArrayList<Integer> lon;
+  private ArrayList<Float> gLon;
+  private ArrayList<String> oLon;
+  private ArrayList<Float> alt;
+  private ArrayList<Float> asim;
+*/
   public SensoresDAO(){
     temp = new ArrayList<Integer>();
     hum = new ArrayList<Integer>();
@@ -23,6 +32,16 @@ public class SensoresDAO{
     vel = new ArrayList<Float>();
     rad = new ArrayList<Integer>();
     ray = new ArrayList<Integer>();
+    /*
+    lat = new ArrayList<Integer>();
+    gLat = new ArrayList<Float>();
+    oLat = new ArrayList<String>();
+    lon = new ArrayList<Integer>();
+    gLon = new ArrayList<Float>();
+    oLon = new ArrayList<String>();
+    alt = new ArrayList<Float>();
+    asim = new ArrayList<Float>();
+    */
   }
 
   public ArrayList consultarDatos( String finicial, String ffinal ){
@@ -42,6 +61,16 @@ public class SensoresDAO{
           vel.add( Float.parseFloat( result.getString("velocidad") ) );
           rad.add( Integer.parseInt( result.getString("radiacion") ) );
           ray.add( Integer.parseInt( result.getString("rayos") ) );
+          /*
+          lat.add( Integer.parseInt( result.getString("latitud") ) );
+          gLat.add( Integer.parseInt( result.getString("grados_lat") ) );
+          oLat.add( Integer.parseInt( result.getString("orientacion_lat") ) );
+          lon.add( Integer.parseInt( result.getString("longitud") ) );
+          gLon.add( Integer.parseInt( result.getString("gradLon") ) );
+          oLon.add( Integer.parseInt( result.getString("orientacion_lon") ) );
+          alt.add( Integer.parseInt( result.getString("altitud") ) );
+          asim.add( Integer.parseInt( result.getString("asimuth") ) );
+          */
         }
 
         conn.close();
@@ -52,6 +81,16 @@ public class SensoresDAO{
         res.add( vel );
         res.add( rad );
         res.add( ray );
+        /*
+        res.add( lat );
+        res.add( gLat );
+        res.add( oLat );
+        res.add( lon );
+        res.add( gLon );
+        res.add( oLon );
+        res.add( alt );
+        res.add( asim );
+        */
 
         return res;
       }
@@ -77,6 +116,16 @@ public class SensoresDAO{
           vel.add( Float.parseFloat( result.getString("velocidad") ) );
           rad.add( Integer.parseInt( result.getString("radiacion") ) );
           ray.add( Integer.parseInt( result.getString("rayos") ) );
+          /*
+          lat.add( Integer.parseInt( result.getString("latitud") ) );
+          gLat.add( Integer.parseInt( result.getString("grados_lat") ) );
+          oLat.add( Integer.parseInt( result.getString("orientacion_lat") ) );
+          lon.add( Integer.parseInt( result.getString("longitud") ) );
+          gLon.add( Integer.parseInt( result.getString("gradLon") ) );
+          oLon.add( Integer.parseInt( result.getString("orientacion_lon") ) );
+          alt.add( Integer.parseInt( result.getString("altitud") ) );
+          asim.add( Integer.parseInt( result.getString("asimuth") ) );
+          */
         }
 
         res.add( temp );
@@ -85,6 +134,16 @@ public class SensoresDAO{
         res.add( vel );
         res.add( rad );
         res.add( ray );
+        /*
+        res.add( lat );
+        res.add( gLat );
+        res.add( oLat );
+        res.add( lon );
+        res.add( gLon );
+        res.add( oLon );
+        res.add( alt );
+        res.add( asim );
+        */
 
         return res;
       }

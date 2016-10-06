@@ -12,7 +12,9 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.CategoryAxis;
 import java.util.ArrayList;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @ManagedBean( name = "datos" )
 public class ChartView implements Serializable {
@@ -23,8 +25,8 @@ public class ChartView implements Serializable {
     private float velocidad;
     private Integer radiacion;
     private Integer rayos;
-    private String finicial;
-    private String ffinal;
+    private Date finicial;
+    private Date ffinal;
 
     private ArrayList<Integer> tempArray;
     private ArrayList<Integer> humArray;
@@ -95,11 +97,11 @@ public class ChartView implements Serializable {
       return this.rayos;
     }
 
-    public String getFinicial(){
+    public Date getFinicial(){
       return this.finicial;
     }
 
-    public String getFfinal(){
+    public Date getFfinal(){
       return this.ffinal;
     }
 
@@ -127,11 +129,11 @@ public class ChartView implements Serializable {
       this.rayos = rayos;
     }
 
-    public void setFinicial( String finicial ){
+    public void setFinicial( Date finicial ){
       this.finicial = finicial;
     }
 
-    public void setFfinal( String ffinal ){
+    public void setFfinal( Date ffinal ){
       this.ffinal = ffinal;
     }
 
@@ -163,15 +165,13 @@ public class ChartView implements Serializable {
     public LineChartModel getRayosLine() {
         return rayosLine;
     }
-    //
-    // public LineChartModel getLineModel2() {
-    //     return lineModel2;
-    // }
 
     public void graficar(){
       ArrayList<ArrayList> result = new ArrayList<ArrayList>();
       SensoresController sc = new SensoresController();
-      result = sc.consultarDatos( finicial, ffinal );
+      DateFormat myFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+      System.out.println( myFormat.format( finicial ) );
+      result = sc.consultarDatos( myFormat.format( finicial ), myFormat.format( ffinal ) );
       tempArray = result.get(0);
       humArray = result.get(1);
       dirArray = result.get(2);
@@ -227,7 +227,6 @@ public class ChartView implements Serializable {
 
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Temperatura");
-
         for( int i = 0; i < tempArray.size(); i++ ){
           series1.set( i, tempArray.get( i ) );
         }
@@ -322,30 +321,4 @@ public class ChartView implements Serializable {
 
         return model;
     }
-
-    // private LineChartModel initCategoryModel() {
-    //     LineChartModel model = new LineChartModel();
-    //
-    //     ChartSeries boys = new ChartSeries();
-    //     boys.setLabel("Boys");
-    //     boys.set("2004", 120);
-    //     boys.set("2005", 100);
-    //     boys.set("2006", 44);
-    //     boys.set("2007", 150);
-    //     boys.set("2008", 25);
-    //
-    //     ChartSeries girls = new ChartSeries();
-    //     girls.setLabel("Girls");
-    //     girls.set("2004", 52);
-    //     girls.set("2005", 60);
-    //     girls.set("2006", 110);
-    //     girls.set("2007", 90);
-    //     girls.set("2008", 120);
-    //
-    //     model.addSeries(boys);
-    //     model.addSeries(girls);
-    //
-    //     return model;
-    // }
-
 }
