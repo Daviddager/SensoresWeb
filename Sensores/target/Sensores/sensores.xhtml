@@ -69,9 +69,9 @@
        </b:column>
        <p>
          <b:commandButton action="#{datos.graficar()}" look="info" iconAwesome="line-chart" value="Graficar"/>
-         <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-        <p:fileDownload value="#{data.generatefile()}" />
-    </p:commandButton>
+       </p>
+        <p>
+         <b:commandButton action="#{datos.downloadFile}" id="downloadBtn" look="warning" value="Download"/>
        </p>
        <b:column col-md="7" >
         <b:panel title="Gráficas" look="info">

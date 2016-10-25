@@ -15,7 +15,7 @@ public class SensoresDAO{
   private ArrayList<Float> vel;
   private ArrayList<Integer> rad;
   private ArrayList<Integer> ray;
-/*
+  /*
   private ArrayList<Integer> lat;
   private ArrayList<Float> gLat;
   private ArrayList<String> oLat;
@@ -24,7 +24,7 @@ public class SensoresDAO{
   private ArrayList<String> oLon;
   private ArrayList<Float> alt;
   private ArrayList<Float> asim;
-*/
+  */
   public SensoresDAO(){
     temp = new ArrayList<Integer>();
     hum = new ArrayList<Integer>();
@@ -146,6 +146,24 @@ public class SensoresDAO{
         */
 
         return res;
+      }
+    }catch( SQLException ex ){
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  public ResultSet getData( String finicial, String ffinal ){
+    try{
+      Connection conn = new DatabaseHelper().getConnection();
+      ArrayList<String> res = new ArrayList<String>();
+      if( conn != null ){
+        System.out.println( "Connected" );
+
+        //SELECT * FROM data WHERE datetime BETWEEN '2009-10-20 00:00:00' AND '2009-10-20 23:59:59'
+        String query = "SELECT * FROM datos WHERE fecha BETWEEN '" + finicial + " 00:00:00' AND '" + ffinal + " 00:00:00' ORDER BY fecha";
+        Statement statement = conn.createStatement( );
+        return statement.executeQuery(query);
       }
     }catch( SQLException ex ){
       ex.printStackTrace();

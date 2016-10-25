@@ -3,6 +3,20 @@ package com.presentation.bean;
 import com.logic.controller.SensoresController;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -15,9 +29,11 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @ManagedBean( name = "datos" )
-public class ChartView implements Serializable {
+public class ChartView implements Serializable{
 
     private Integer temperatura;
     private Integer humedad;
@@ -179,22 +195,50 @@ public class ChartView implements Serializable {
       radArray = result.get(4);
       rayArray = result.get(5);
       createModels();
-    }
 
+    }
+    public void downloadFile() throws IOException {
+      FacesContext fc = FacesContext.getCurrentInstance();
+      HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+      String filename = "testing.txt";
+      response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
+      response.setContentType( "plain" ); // Check http://www.iana.org/assignments/media-types for all types. Use if necessary ServletContext#getMimeType() for auto-detection based on filename.
+      //response.setContentLength(contentLength); // Set it with the file size. This header is optional. It will work if it's omitted, but the download progress will be unknown.
+      response.setHeader("Content-Disposition", "attachment; filename=testing.txt"); // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
+
+      OutputStream output = response.getOutputStream();
+      // Now you can write the InputStream of the file to the above OutputStream the usual way.
+      // ...
+      SensoresController sc = new SensoresController();
+      DateFormat myFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+      System.out.println( myFormat.format( finicial ) );
+      try{
+      ResultSet result = sc.getData( myFormat.format( finicial ), myFormat.format( ffinal ) );
+      Writer w = new OutputStreamWriter( output, "UTF-8" );
+      while( result.next() ){
+        w.write( Integer.toString(result.getInt("temperatura")) + "," );
+      }
+      w.close();
+      fc.responseComplete(); // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
+      }catch( SQLException ex ){
+        ex.printStackTrace();
+      }
+    }
+    
     private void createModels() {
         temperaturaLine = initTemperaturaModel();
         temperaturaLine.setLegendPosition("e");
         temperaturaLine.setTitle("Temperatura");
         Axis yAxis = temperaturaLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        yAxis.setMin( setlowerBoundInt( tempArray ) );
+        yAxis.setMax( setHigherBoundInt( tempArray ) );
 
         humedadLine = initHumedadModel();
         humedadLine.setLegendPosition("e");
         humedadLine.setTitle("Humedad");
         yAxis = humedadLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        yAxis.setMin( setlowerBoundInt( humArray ) );
+        yAxis.setMax( setHigherBoundInt( humArray ) );
 
         direccionLine = initDireccionModel();
         direccionLine.setLegendPosition("e");
@@ -204,22 +248,22 @@ public class ChartView implements Serializable {
         velocidadLine.setLegendPosition("e");
         velocidadLine.setTitle("Velocidad");
         yAxis = velocidadLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        yAxis.setMin( setlowerBoundFloat( velArray ) );
+        yAxis.setMax( setHigherBoundFloat( velArray ) );
 
         radiacionLine = initRadiacionModel();
         radiacionLine.setLegendPosition("e");
         radiacionLine.setTitle("Radiacion");
         yAxis = radiacionLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        yAxis.setMin( setlowerBoundInt( radArray ) );
+        yAxis.setMax( setHigherBoundInt( radArray ) );
 
         rayosLine = initRayosModel();
         rayosLine.setLegendPosition("e");
         rayosLine.setTitle("Rayos");
         yAxis = rayosLine.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        yAxis.setMin( setlowerBoundInt( rayArray ) );
+        yAxis.setMax( setHigherBoundInt( rayArray ) );
     }
 
     private LineChartModel initTemperaturaModel() {
@@ -320,5 +364,39 @@ public class ChartView implements Serializable {
         model.addSeries(series1);
 
         return model;
+    }
+
+    private int setlowerBoundInt( ArrayList<Integer> array ){
+      int minVal = array.get(0);
+      for( int i = 1; i < array.size(); i++ ){
+        if( minVal > array.get(i) ) minVal = array.get(i);
+      }
+      return minVal - 1;
+    }
+
+    private int setHigherBoundInt( ArrayList<Integer> array ){
+      int maxVal = array.get(0);
+      for( int i = 1; i < array.size(); i++ ){
+        if( maxVal < array.get(i) ) {
+          maxVal = array.get(i);
+        }
+      }
+      return (maxVal + 1);
+    }
+
+    private int setlowerBoundFloat( ArrayList<Float> array ){
+      int minVal = array.get(0).intValue();
+      for( int i = 1; i < array.size(); i++ ){
+        if( minVal > array.get(i).intValue() ) minVal = array.get(i).intValue();
+      }
+      return minVal - 1;
+    }
+
+    private int setHigherBoundFloat( ArrayList<Float> array ){
+      int maxVal = array.get(0).intValue();
+      for( int i = 1; i < array.size(); i++ ){
+        if( maxVal < array.get(i).intValue() ) maxVal = array.get(i).intValue();
+      }
+      return (maxVal + 1);
     }
 }
